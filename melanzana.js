@@ -3,17 +3,23 @@ document.addEventListener('DOMContentLoaded', () => {
 	var goButton = grab('goButton');
 	var getDt = calcDt();
 	var veggies = ['eggplant.png'];
+	document.body.style['background-color'] = 'black';
+	var pct = 5;
 
 
 	goButton.addEventListener('click', () => {
-		alert(document.body.style['background-color']);
 
-		drawPic(veggies[0],50);	
+		drawPic(veggies[0],pct);	
+		pct += 5;
 	});
 
   //function that takes the percentage of the picture that should
 	//currently show and renders it
 	function drawPic (picAddr, percent) {
+		//first clear out the old entries, if they exist
+		dump('mask');
+		dump('pic');
+
 		var frag = document.createDocumentFragment();
 		var pic = frag.appendChild(document.createElement('img'));
 		var mask = frag.appendChild(document.createElement('div'));
@@ -23,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		//scale height to 60% of screen and keep aspect ratio
 		var scale = heightPercent(60) / pic.height ;
 		console.log(pic.width + ', ' + pic.height);
+		pic.id = 'pic';
 		pic.width *= scale;
 		pic.height *= scale;
 
@@ -32,11 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		pic.style.left = widthPercent(40).toString() + 'px';
 		pic.style['z-index'] = '-50';
 
-		//now drop a mask of the
-		mask.style['background-color'] = 'black';// document.body.style['background-color'];
+		//now drop a mask of the background color over the image
+		//only leaving *percent* revealed
+		mask.id = 'mask';
+		mask.style['background-color'] = document.body.style['background-color'];
 		mask.style.position = 'absolute';
 		mask.style['min-width'] = pic.width + 'px';
-		mask.style['min-height'] = (pic.height * percent / 100) + 'px';
+		mask.style['min-height'] = (pic.height * (100 - percent) / 100) + 'px';
 		mask.style.top = pic.style.top;
 		mask.style.left = pic.style.left;
 		mask.style['z-index'] = '50';
@@ -44,6 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		//render to document
 		document.body.appendChild(frag);
 	}
+	
+	//function for deleting elements by id
+	function dump(id) {
+		var dumpee = document.getElementById(id);
+		if  (dumpee) dumpee.parentNode.removeChild(dumpee);
+	}
+
 
 	//simple helper making percentage-based calculations
 	function pctToPx (dimension, percent) {
