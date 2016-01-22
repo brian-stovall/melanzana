@@ -10,5 +10,14 @@ html {
 }
 
 body {
+	position:relative;
+	width:100vw;
+	height:100vh;
 	background-color:black;
+}
+
+#goButton {
+	position:relative;
+	top:70%;
+	left:50%;
 }
