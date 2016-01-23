@@ -55,9 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			heightPercent(60) / pic.height :
 			widthPercent(60) / pic.width;
 		if (scale > 1) scale = 1/scale;
-
+		//hmm... changing one dimension automatically changes both to preserve a/r?
 		pic.width *= scale;
-		pic.height *= scale;
 
 		//position on screen
 		pic.style.position = 'absolute';
@@ -108,6 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	//test
-	animatePic(1, 'tomato.png', 'rest');
+	animatePic(.25, 'tomato.png', 'rest');
 });
 
