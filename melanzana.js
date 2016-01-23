@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 	var grab = document.getElementById.bind(document);
 	var goButton = grab('goButton');
+	var clockPanel = grab('clockPanel');
 	var veggies = ['eggplant.png'];
 	document.body.style['background-color'] = 'black';
 
@@ -8,15 +9,26 @@ document.addEventListener('DOMContentLoaded', () => {
 	//to complete in 'time' argument minutes
 	function animatePic(duration, picAddr) {
 		//make dt timer
-		var duration = duration * 60;
+		var duration = duration * 60 + 1;
 		var seconds = 0;
 		var timer = calcDt();
 		window.requestAnimationFrame(animate);
 
 		function animate() {
-			console.log('animating');
+			//console.log('animating');
 			seconds += timer();
+			//make the clock readout
+			var timeLeft = duration - seconds;
+			var minutesLeft = Math.floor(timeLeft/60);
+			var secondsLeft = Math.floor(timeLeft % 60);
+			if (minutesLeft < 0) minutesLeft = 0;
+			if (secondsLeft < 0) secondsLeft = 0;
+			clockPanel.textContent = ('0' + minutesLeft).slice(-2) + ':' + ('0' + secondsLeft).slice(-2);
+
+			//animate the picture
 			drawPic(picAddr, seconds/duration * 100);
+
+			//recurse while needed
 			if (seconds < duration) window.requestAnimationFrame(animate);
 		}
 	}
@@ -34,16 +46,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		pic.src = 'assets/' + picAddr;
 
-		//scale height to 60% of screen and keep aspect ratio
-		var scale = heightPercent(60) / pic.height ;
+		//scale smaller of w/h to 60% of screen w/h and keep aspect ratio
+		var scale = (heightPercent(100) < widthPercent(100)) ? heightPercent(60) / pic.height :
+				widthPercent(60) / pic.width;
 		pic.id = 'pic';
 		pic.width *= scale;
 		pic.height *= scale;
 
 		//position on screen
 		pic.style.position = 'absolute';
-		pic.style.top = heightPercent(15).toString() + 'px';
-		pic.style.left = widthPercent(40).toString() + 'px';
+		pic.style.top = ((heightPercent(100)-pic.height)/2).toString() + 'px';
+		pic.style.left = ((widthPercent(100)-pic.width)/2).toString() + 'px';
 		pic.style['z-index'] = '-50';
 
 		//now drop a mask of the background color over the image
@@ -89,6 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	//test
-	//animatePic(1, 'eggplant.png');
+	animatePic(1.25, 'watermelon.png');
 });
 

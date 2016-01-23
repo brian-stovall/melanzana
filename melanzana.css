@@ -16,8 +16,21 @@ body {
 	background-color:black;
 }
 
-#goButton {
+#clockPanel {
 	position:relative;
-	top:70%;
-	left:50%;
+	top:80vh;
+	min-height:20vh;
+	min-width:100vw;	
+	font-family:'alarmClock';
+	font-size:10vmin;
+	text-align:center;
+	background-color:transparent;
+	padding-top:5vmin;
+	color:white;
+	z-index:100;
+}
+
+@font-face {
+	font-family: 'alarmClock';
+	src: url('assets/alarmClock.ttf') format('truetype');
 }
