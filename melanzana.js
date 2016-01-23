@@ -1,17 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
 	var grab = document.getElementById.bind(document);
 	var goButton = grab('goButton');
-	var getDt = calcDt();
 	var veggies = ['eggplant.png'];
 	document.body.style['background-color'] = 'black';
-	var pct = 5;
 
+	//starts an animation of the timer picture
+	//to complete in 'time' argument minutes
+	function animatePic(duration, picAddr) {
+		//make dt timer
+		var duration = duration * 60;
+		var seconds = 0;
+		var timer = calcDt();
+		window.requestAnimationFrame(animate);
 
-	goButton.addEventListener('click', () => {
-
-		drawPic(veggies[0],pct);	
-		pct += 5;
-	});
+		function animate() {
+			console.log('animating');
+			seconds += timer();
+			drawPic(picAddr, seconds/duration * 100);
+			if (seconds < duration) window.requestAnimationFrame(animate);
+		}
+	}
 
   //function that takes the percentage of the picture that should
 	//currently show and renders it
@@ -28,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		//scale height to 60% of screen and keep aspect ratio
 		var scale = heightPercent(60) / pic.height ;
-		console.log(pic.width + ', ' + pic.height);
 		pic.id = 'pic';
 		pic.width *= scale;
 		pic.height *= scale;
@@ -80,4 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			return result;
 		}
 	}
+
+	//test
+	//animatePic(1, 'eggplant.png');
 });
+
