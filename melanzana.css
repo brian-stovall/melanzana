@@ -1,3 +1,8 @@
+/*preload*/
+.preload {
+	background: url('assets/eggplant.png') no-repeat -9999px -9999px;
+}
+
 html {
 	box-sizing: border-box;
 	height:100vh;

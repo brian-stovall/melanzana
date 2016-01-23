@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		topWords.textContent = (style === 'work') ? 'Work' : 'Relax';
 
 		//style everything appropriately
-		topWords.style.color = (style === 'work') ? '#a03' : 'black';
-		document.body.style['background-color'] = (style === 'work') ? 'black' : '#646';
+		topWords.style.color = (style === 'work') ? 'black' : 'black';
+		document.body.style['background-color'] = (style === 'work') ? '#488' : '#844';
 
 		//draw the initial image and get a reference to the mask
 		var mask = drawPic(picAddr);
