@@ -3,9 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	var goButton = grab('goButton');
 	var clockPanel = grab('clockPanel');
 	var topWords = grab('topWords');
-	document.body.style['background-color'] = 'black';
-	var workDuration = .2;
-	var restDuration = .1;
+	document.body.style['background-color'] = '#555';
+	var workDuration = 2;
+	var restDuration = 1;
 
 	//starts an animation of the timer picture
 	//to complete in 'time' argument minutes
@@ -123,6 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	//test
-	animatePic('eggplant.png', 'relax');
+	//animatePic('eggplant.png', 'relax');
 });
 
