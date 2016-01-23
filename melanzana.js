@@ -2,17 +2,27 @@ document.addEventListener('DOMContentLoaded', () => {
 	var grab = document.getElementById.bind(document);
 	var goButton = grab('goButton');
 	var clockPanel = grab('clockPanel');
-	var veggies = ['eggplant.png'];
+	var topWords = grab('topWords');
 	document.body.style['background-color'] = 'black';
+	var workDuration = .2;
+	var restDuration = .1;
 
 	//starts an animation of the timer picture
 	//to complete in 'time' argument minutes
 	//take a style variable that can be 'work' or 'rest' for the two different display styles
-	function animatePic(duration, picAddr, style) {
+	function animatePic(picAddr, style) {
 		//make dt timer
-		var duration = duration * 60;
+		var duration = (style === 'work') ? workDuration : restDuration;
+		duration = duration * 60;
 		var seconds = 0;
 		var timer = calcDt();
+
+		//change the text at the top of the screen
+		topWords.textContent = (style === 'work') ? 'Work' : 'Relax';
+
+		//style everything appropriately
+		topWords.style.color = (style === 'work') ? '#a03' : 'black';
+		document.body.style['background-color'] = (style === 'work') ? 'black' : '#646';
 
 		//draw the initial image and get a reference to the mask
 		var mask = drawPic(picAddr);
@@ -37,12 +47,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			//recurse while needed
 			if (seconds < duration) window.requestAnimationFrame(animate);
+			else {
+				var newStyle = (style === 'work') ? 'rest' : 'work'; 
+				animatePic(picAddr, newStyle);
+			}
 		}
 	}
 
 	//function that draws the picture and a div mask completely obscuring it,
 	//then returns the mask's element
 	function drawPic (picAddr) {
+		dump('pic');
+		dump('mask');
 		var pic = document.body.appendChild(document.createElement('img'));
 		var mask = document.body.appendChild(document.createElement('div'));
 		mask.id = 'mask';
@@ -107,6 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	//test
-	animatePic(.25, 'tomato.png', 'rest');
+	animatePic('eggplant.png', 'relax');
 });
 

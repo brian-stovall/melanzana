@@ -16,18 +16,25 @@ body {
 	background-color:black;
 }
 
-#clockPanel {
-	position:relative;
-	top:80vh;
+.display {
+	position:absolute;
 	min-height:20vh;
 	min-width:100vw;	
-	font-family:'alarmClock';
 	font-size:10vmin;
 	text-align:center;
 	background-color:transparent;
 	padding-top:5vmin;
 	color:white;
 	z-index:100;
+}
+
+#clockPanel {
+	top:80vh;
+	font-family:'alarmClock';
+}
+
+#topWords {
+	top:0vh;
 }
 
 @font-face {
