@@ -1,3 +1,7 @@
+//preload
+var eggplant = new Image();
+eggplant.src = 'assets/eggplant.png';
+
 document.addEventListener('DOMContentLoaded', () => {
 	//sloth
 	var grab = document.getElementById.bind(document);
@@ -12,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	var workMinus = grab('workMinus');
 	var restPlus = grab('restPlus');
 	var restMinus = grab('restMinus');
+	var ding = grab('ding');
 
 	//a handy list of controls that can go away when the animation starts
 	var controls = document.getElementsByClassName('control');
@@ -29,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	beginButton.onclick = () => { 
 		for (var i = 0; i < controls.length; i++)
 			controls[i].style.visibility = 'hidden';
-		animatePic('eggplant.png', 'work'); 
+		animatePic('work'); 
 	};
 
 	workMinus.onclick = () => {
@@ -39,7 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	};
 
 	workPlus.onclick = () => {
-		workDuration += 1;
+		if (workDuration < 99)
+			workDuration += 1;
 		workDur.textContent = workDuration;
 	};
 
@@ -50,7 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	};
 
 	restPlus.onclick = () => {
-		restDuration += 1;
+		if (restDuration < 99)
+			restDuration += 1;
 		restDur.textContent = restDuration;
 	};
 
@@ -70,10 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	//starts an animation of the timer picture
 	//to complete in 'time' argument minutes
 	//take a style variable that can be 'work' or 'rest' for the two different display styles
-	function animatePic(picAddr, style) {
+	function animatePic(style) {
 
 		animRunning = true;
-		
 
 		//make dt timer
 		var duration = (style === 'work') ? workDuration : restDuration;
@@ -90,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		document.body.style['background-color'] = (style === 'work') ? '#488' : '#844';
 
 		//draw the initial image and get a reference to the mask
-		var mask = drawPic(picAddr);
+		drawPic();
 
 		window.requestAnimationFrame(animate);
 		
@@ -113,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			var secondsLeft = Math.floor(timeLeft % 60);
 			if (minutesLeft < 0) minutesLeft = 0;
 			if (secondsLeft < 0) secondsLeft = 0;
-			clockPanel.textContent = ('0' + minutesLeft).slice(-2) + ':' + ('0' + secondsLeft).slice(-2);
+			clockPanel.textContent = minutesLeft + ':' + ('0' + secondsLeft).slice(-2);
 
 			//change the mask height
 			mask.style['min-height'] = (style === 'work') ? 
@@ -124,15 +130,16 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (animRunning) {
 				if (seconds < duration) window.requestAnimationFrame(animate);
 				else {
+					ding.play();
 					var newStyle = (style === 'work') ? 'rest' : 'work'; 
-					animatePic(picAddr, newStyle);
+					animatePic(newStyle);
 				}
 			}
 			//animation cleanup code
 			else {
 				document.onclick = null;
-				mask.parentNode.removeChild(mask);
-				pic.parentNode.removeChild(pic);
+				dump('mask');
+				dump('pic');
 				for (var i = 0; i < controls.length; i++)
 					controls[i].style.visibility = 'visible';
 			}
@@ -141,14 +148,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	//function that draws the picture and a div mask completely obscuring it,
 	//then returns the mask's element
-	function drawPic (picAddr) {
+	function drawPic () {
 		dump('pic');
 		dump('mask');
-		var pic = document.body.appendChild(document.createElement('img'));
+		var pic = document.body.appendChild(eggplant);
 		var mask = document.body.appendChild(document.createElement('div'));
 		mask.id = 'mask';
 		pic.id = 'pic';
-		pic.src = 'assets/' + picAddr;
 
 		//choose the smaller screen dimension and scale the matching
 		//pic dimension to 60%, then scale the other dimension accordingly to keep a/r
@@ -175,9 +181,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		mask.style['z-index'] = '50';
 		//this is a reference to the final height of the full mask
 		mask.maxHeight = pic.height;
-
-		//return the mask element
-		return mask;
 	}
 	
 	//function for deleting elements by id
@@ -207,7 +210,5 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	}
 
-	//test
-	//animatePic('eggplant.png', 'relax');
 });
 
