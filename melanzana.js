@@ -15,15 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	//a handy list of controls that can go away when the animation starts
 	var controls = document.getElementsByClassName('control');
-
-	//make topWords say something nice
-	topWords.textContent = 'Melanzana Timer';
 	
 	//'globals' that hold work and rest duration
 	var workDuration = parseInt(workDur.textContent);
 	var restDuration = parseInt(restDur.textContent);
 
-	document.body.style['background-color'] = 'black';
+	var animRunning = false;
+
+	menu();
+
+
 
 	beginButton.onclick = () => { 
 		for (var i = 0; i < controls.length; i++)
@@ -52,16 +53,34 @@ document.addEventListener('DOMContentLoaded', () => {
 		restDuration += 1;
 		restDur.textContent = restDuration;
 	};
+
+	//return the window to the menu state
+  function menu() {
+		//state variable - is the animation running?
+		animRunning=false;
+
+		//make topWords say something nice
+		topWords.textContent = 'Melanzana Timer';
+		topWords.style.color = 'white';
+		clockPanel.style.color = 'black';
+
+		document.body.style['background-color'] = 'black';
+	}
 	
 	//starts an animation of the timer picture
 	//to complete in 'time' argument minutes
 	//take a style variable that can be 'work' or 'rest' for the two different display styles
 	function animatePic(picAddr, style) {
+
+		animRunning = true;
+		
+
 		//make dt timer
 		var duration = (style === 'work') ? workDuration : restDuration;
 		duration = duration * 60;
 		var seconds = 0;
 		var timer = calcDt();
+
 
 		//change the text at the top of the screen
 		topWords.textContent = (style === 'work') ? 'Work' : 'Relax';
@@ -77,11 +96,21 @@ document.addEventListener('DOMContentLoaded', () => {
 		
 		//tracks timing, changes the mask height, and renders the timer
 		function animate() {
+
+			//if the user clicks the window while the timer is running,
+			//they will be prompted to stop the animation and return to menu
+			document.onclick = () => {
+				if (animRunning)
+					if (confirm('Stop the timer?')) {
+						menu(); 
+					}
+			}
+
 			seconds += timer();
 			//make the clock readout
 			var timeLeft = duration - seconds;
 			var minutesLeft = Math.floor(timeLeft/60);
-			var secondsLeft = Math.ceil(timeLeft % 60);
+			var secondsLeft = Math.floor(timeLeft % 60);
 			if (minutesLeft < 0) minutesLeft = 0;
 			if (secondsLeft < 0) secondsLeft = 0;
 			clockPanel.textContent = ('0' + minutesLeft).slice(-2) + ':' + ('0' + secondsLeft).slice(-2);
@@ -92,10 +121,20 @@ document.addEventListener('DOMContentLoaded', () => {
 				(seconds/duration * mask.maxHeight) + 'px'; 
 
 			//recurse while needed
-			if (seconds < duration) window.requestAnimationFrame(animate);
+			if (animRunning) {
+				if (seconds < duration) window.requestAnimationFrame(animate);
+				else {
+					var newStyle = (style === 'work') ? 'rest' : 'work'; 
+					animatePic(picAddr, newStyle);
+				}
+			}
+			//animation cleanup code
 			else {
-				var newStyle = (style === 'work') ? 'rest' : 'work'; 
-				animatePic(picAddr, newStyle);
+				document.onclick = null;
+				mask.parentNode.removeChild(mask);
+				pic.parentNode.removeChild(pic);
+				for (var i = 0; i < controls.length; i++)
+					controls[i].style.visibility = 'visible';
 			}
 		}
 	}

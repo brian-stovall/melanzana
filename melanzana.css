@@ -1,7 +1,3 @@
-/*preload*/
-.preload {
-	background: url('assets/eggplant.png') no-repeat -9999px -9999px;
-}
 
 html {
 	box-sizing: border-box;
@@ -22,10 +18,10 @@ body {
 
 button, .amt, .label {
 	position: absolute;
-	width:5vw;
-	height:6vh;
-	top:47vh;
-	font-size:2vw;
+	width:6vw;
+	height:8vh;
+	top:54vh;
+	font-size:2.5vw;
 }
 
 .amt, .label {
@@ -55,6 +51,7 @@ button, .amt, .label {
 }
 
 #begin {
+	top:75vh;
 	left:45vw;
 	width:10vw;
 }
