@@ -20,6 +20,28 @@ body {
 	height:100vh;
 }
 
+button, .amt, .label {
+	position: absolute;
+	width:5vw;
+	height:6vh;
+	top:47vh;
+	font-size:2vw;
+}
+
+.amt, .label {
+	min-width:10vw;
+	min-height:6vh;
+	text-align:center;
+	padding-top:1vh;
+	color: grey;
+}
+
+.label {
+	top:42vh;
+	width:25vw;
+}
+
+
 .display {
 	position:absolute;
 	min-height:20vh;
@@ -32,51 +54,42 @@ body {
 	z-index:100;
 }
 
-.txtBtn {
-	position:absolute;
-	font-size:7vw;
-	color:black;
-	top:45vh;
-}	
-
-.amt {
-	position:absolute;
-	font-size:6vw;
-	top:46vh;
-	text-align:center;
+#begin {
+	left:45vw;
+	width:10vw;
 }
 
-#workPlus {
-	left:20vw;
-}
-
-#workMinus {
-	left:5vw;
-}
-
-#restPlus {
-	right:5vw;
-}
-
-#restMinus {
-	right:20vw;
-}
-#workDur {
-	left:13vw;
-}
-#restDur {
+#restLabel {
 	right:13vw;
 }
 
-#begin {
-	position: absolute;
-	width:10vw;
-	height:6vh;
-	top:47vh;
-	left:45vw;
-	font-size:2vw;
+#workMinus {
+	left:15vw;
 }
 
+#workDur {
+	left:20vw;
+}
+
+#workPlus {
+	left:30vw;
+}
+
+#workLabel {
+	left:13vw;
+}
+
+#restMinus {
+	right:30vw;
+}
+
+#restDur {
+	right:20vw;
+}
+
+#restPlus {
+	right:15vw;
+}
 #clockPanel {
 	top:80vh;
 	font-family:'alarmClock';

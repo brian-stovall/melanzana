@@ -1,12 +1,58 @@
 document.addEventListener('DOMContentLoaded', () => {
+	//sloth
 	var grab = document.getElementById.bind(document);
-	var goButton = grab('goButton');
+
+	//getting element references
+	var beginButton = grab('begin');
 	var clockPanel = grab('clockPanel');
 	var topWords = grab('topWords');
-	document.body.style['background-color'] = '#555';
-	var workDuration = 2;
-	var restDuration = 1;
+	var workDur = grab('workDur');
+	var restDur = grab('restDur');
+	var workPlus = grab('workPlus');
+	var workMinus = grab('workMinus');
+	var restPlus = grab('restPlus');
+	var restMinus = grab('restMinus');
 
+	//a handy list of controls that can go away when the animation starts
+	var controls = document.getElementsByClassName('control');
+
+	//make topWords say something nice
+	topWords.textContent = 'Melanzana Timer';
+	
+	//'globals' that hold work and rest duration
+	var workDuration = parseInt(workDur.textContent);
+	var restDuration = parseInt(restDur.textContent);
+
+	document.body.style['background-color'] = 'black';
+
+	beginButton.onclick = () => { 
+		for (var i = 0; i < controls.length; i++)
+			controls[i].style.visibility = 'hidden';
+		animatePic('eggplant.png', 'work'); 
+	};
+
+	workMinus.onclick = () => {
+		if (workDuration > 1)
+			workDuration -= 1;
+		workDur.textContent = workDuration;
+	};
+
+	workPlus.onclick = () => {
+		workDuration += 1;
+		workDur.textContent = workDuration;
+	};
+
+	restMinus.onclick = () => {
+		if (restDuration > 1)
+			restDuration -= 1;
+		restDur.textContent = restDuration;
+	};
+
+	restPlus.onclick = () => {
+		restDuration += 1;
+		restDur.textContent = restDuration;
+	};
+	
 	//starts an animation of the timer picture
 	//to complete in 'time' argument minutes
 	//take a style variable that can be 'work' or 'rest' for the two different display styles
