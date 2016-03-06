@@ -1,1 +1,1 @@
-A pomodoro timer with veggies and junkfood!
+A pomodoro timer with an animated eggplant.
